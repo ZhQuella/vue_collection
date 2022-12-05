@@ -31,7 +31,8 @@ export default defineConfig({
       "pages": "/src/pages",
       "plugins": "/src/plugins",
       "router": "/src/routers",
-      "utils": "/src/utils"
+      "utils": "/src/utils",
+      "types": "/types"
     }
   }
 })

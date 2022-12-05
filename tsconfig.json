@@ -19,6 +19,7 @@
       "types/*": ["types/*"],
       "router/*": ["src/routers/*"],
       "router": ["src/routers/index"],
+      "pages/*": ["src/pages/*"],
       "utils/*": ["src/utils/*"]
     }
   },
