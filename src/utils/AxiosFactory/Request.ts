@@ -23,9 +23,9 @@ export default class Request {
   interceptors(intercept: Intercept): void { 
     const { axiosInstance } = this;
     const requestIntercept = intercept.requestIntercept || ((config: AxiosRequestConfig) => config);
-    const requestError = intercept.requestError || ((error: AxiosError) => error);
+    const requestError = intercept.requestError || ((error: AxiosError): AxiosError => error);
     const responseIntercept = intercept.responseIntercept || ((config: AxiosResponse) => config);
-    const responseError = intercept.responseError || ((error: AxiosError) => error);
+    const responseError = intercept.responseError || ((error: AxiosError): AxiosError => error);
     axiosInstance.interceptors.request.use(requestIntercept, requestError);
     axiosInstance.interceptors.response.use(responseIntercept, responseError);
   };
