@@ -7,9 +7,14 @@ import type {
 export default class AxiosFactory extends Request {
 
   private RequestConfigMap:any = {};
+  static instance:AxiosFactory;
 
   constructor(config: AxiosRequestConfig) { 
     super(config);
+    if (AxiosFactory.instance === undefined) {
+      AxiosFactory.instance = this;
+    }
+    return AxiosFactory.instance;
   };
 
   public setConfig(name: string, requestConfigs: RequestItem[]): void { 

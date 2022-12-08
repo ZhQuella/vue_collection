@@ -16,6 +16,7 @@ const state: {
 } = reactive({
   songs: []
 });
+
 axios.setConfig("test", [{
   key: "getAbc",
   url: "/search",
@@ -25,6 +26,7 @@ axios.setConfig("test", [{
   }
 }]);
 const methods = axios.create("test");
+
 onMounted(async () => { 
   const { data } = await methods.getAbc({
     query: { keywords: "北京" }
