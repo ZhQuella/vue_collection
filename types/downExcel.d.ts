@@ -1,4 +1,4 @@
-export interface Workbook { 
+export interface Workbok { 
   SheetNames: string[];
   Sheets: any;
 }

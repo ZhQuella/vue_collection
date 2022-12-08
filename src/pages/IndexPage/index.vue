@@ -15,6 +15,14 @@
       导出Excel(有样式版)
     </router-link>
   </div>
+  <div class="-enter-x p-[6px] min-w-[20px]">
+    3. 
+    <router-link :to="{ name: 'Request' }"
+                  tag="div"
+                  class="bg-[pink]">
+      Axios工厂
+    </router-link>
+  </div>
 </template>
 
 <script setup lang="ts">

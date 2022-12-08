@@ -16,6 +16,11 @@ const routes: RouteRecordRaw[] = [
     path: "/down-excel-two",
     name: "DownExcelTWO",
     component: () => import("pages/DownExcel_TWO/index.vue")
+  },
+  {
+    path: "/request",
+    name: "Request",
+    component: () => import("pages/Request/index.vue")
   }
 ];
 

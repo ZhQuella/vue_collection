@@ -1,0 +1,85 @@
+import axios from "axios";
+import type {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError
+} from "axios";
+import type {
+  Intercept,
+  RequestItem
+} from "types/Request";
+import type {
+  Fun
+} from "types/index";
+
+export default class Request { 
+
+  private readonly axiosInstance;
+
+  constructor(config: AxiosRequestConfig) { 
+    this.axiosInstance = axios.create(config);
+  };
+
+  interceptors(intercept: Intercept): void { 
+    const { axiosInstance } = this;
+    const requestIntercept = intercept.requestIntercept || ((config: AxiosRequestConfig) => config);
+    const requestError = intercept.requestError || ((error: AxiosError) => error);
+    const responseIntercept = intercept.responseIntercept || ((config: AxiosResponse) => config);
+    const responseError = intercept.responseError || ((error: AxiosError) => error);
+    axiosInstance.interceptors.request.use(requestIntercept, requestError);
+    axiosInstance.interceptors.response.use(responseIntercept, responseError);
+  };
+
+  public createMethod(requestItem: RequestItem): Fun { 
+    const { axiosInstance } = this;
+    const {
+      url: beforeUrl = "",
+      method = "get",
+      data: outData = {},
+      query: outQuery = {},
+      params: outParams = {},
+      onlyIn: outOnlyIn = false
+    } = requestItem;
+    const that = this;
+
+    return function (internalConfig: RequestItem = {}): any { 
+      const { 
+        data: internalData = {},
+        query: internalQuery = {},
+        params: internalParams = {},
+        onlyIn: internalOnlyIn = false
+      } = internalConfig;
+      const isIn = internalOnlyIn || outOnlyIn;
+      const reuqestConfig: any = {};
+      if (!isIn) {
+        const afterData = that.margeData(outData, internalData);
+        reuqestConfig.data = afterData;
+        const afterQuery = that.margeData(outQuery, internalQuery);
+        reuqestConfig.params = afterQuery;
+      } else { 
+        reuqestConfig.data = internalData;
+        reuqestConfig.params = internalQuery;
+      };
+      const beforeParams = isIn ? internalParams : that.margeData(outParams, internalParams);
+      const url = that.withParam(beforeUrl, beforeParams);
+      return axiosInstance({
+        url,
+        method,
+        ...reuqestConfig
+      })
+    }
+  }
+
+  private margeData(outData: any, innerData: any ): any { 
+    return Object.assign({}, outData, innerData);
+  };
+
+  private withParam(url: string, params: any): string { 
+    let keys = Object.keys(params);
+    if (!keys.length) return url;
+    return url.replace(/\{(\w+)\}/gi, ($1, $2) => {
+      return params[$2] || "";
+    });
+  };
+
+};

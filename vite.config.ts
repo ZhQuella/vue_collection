@@ -32,7 +32,8 @@ export default defineConfig({
       "plugins": "/src/plugins",
       "router": "/src/routers",
       "utils": "/src/utils",
-      "types": "/types"
+      "types": "/types",
+      "api": "/src/api"
     }
   }
 })
