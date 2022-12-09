@@ -24,9 +24,16 @@ axios.setConfig("test", [{
   query: {
     abc: 1
   }
+},{
+  key: "getDef",
+  url: "/search",
+  method: "get",
+  query: {
+    abc: 1
+  }
 }]);
-const methods = axios.create("test");
-
+const methods = axios.create("test", ["getAbc"]);
+console.log(methods);
 onMounted(async () => { 
   const { data } = await methods.getAbc({
     query: { keywords: "北京" }
