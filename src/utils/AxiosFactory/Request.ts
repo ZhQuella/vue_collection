@@ -38,7 +38,8 @@ export default class Request {
       data: outData = {},
       query: outQuery = {},
       params: outParams = {},
-      onlyIn: outOnlyIn = false
+      onlyIn: outOnlyIn = false,
+      ...outArg
     } = requestItem;
     const that = this;
 
@@ -47,7 +48,8 @@ export default class Request {
         data: internalData = {},
         query: internalQuery = {},
         params: internalParams = {},
-        onlyIn: internalOnlyIn = false
+        onlyIn: internalOnlyIn = false,
+        ...internalArg
       } = internalConfig;
       const isIn = internalOnlyIn || outOnlyIn;
       const reuqestConfig: any = {};
@@ -60,12 +62,14 @@ export default class Request {
         reuqestConfig.data = internalData;
         reuqestConfig.params = internalQuery;
       };
+      const args = that.margeData(outArg, internalArg);
       const beforeParams = isIn ? internalParams : that.margeData(outParams, internalParams);
       const url = that.withParam(beforeUrl, beforeParams);
       return axiosInstance({
         url,
         method,
-        ...reuqestConfig
+        ...reuqestConfig,
+        ...args
       })
     }
   }
